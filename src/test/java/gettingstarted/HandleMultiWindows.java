@@ -2,6 +2,8 @@ package gettingstarted;
 
 import com.microsoft.playwright.*;
 
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.List;
 
 public class HandleMultiWindows {
@@ -16,13 +18,24 @@ public class HandleMultiWindows {
         List<Page> allPages = context.pages();
         for (Page p : allPages) {
 
-            if (p.title().contains("Facebook")) {
+            if (p.title().toLowerCase().contains("youtube")) {
                 p.bringToFront();
-                System.out.println("Found Facebook page: " + p.title());
+                System.out.println("Found youtube page: " + p.title());
+                page = p;
                 break;
             }
         }
 
+
+        byte[] arr1 = page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("screenshot1.png")).setFullPage(true));
+        byte[] arr2 = page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("screenshot2.png")).setFullPage(false));
+        System.out.println(Base64.getEncoder().encodeToString(arr1));
+        page.close();
+        browser.close();
     }
+
+
+
+
 
 }
